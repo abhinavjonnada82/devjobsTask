@@ -1,3 +1,15 @@
+company: (...)
+company_logo: (...)
+company_url: (...)
+created_at: (...)
+description: (...)
+how_to_apply: (...)
+id: (...)
+location: "Chicago, IL"
+title: (...)
+type: (...)
+url: (...)
+
    <!-- <div class="columns is-mobile">
       <card
         title="Free"

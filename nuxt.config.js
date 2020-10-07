@@ -38,20 +38,20 @@ export default {
     '@nuxtjs/axios'
   ],
 
-  axios: {
-    credentials: false,
-    proxy: true
-  },
-  proxy: {
-    '/api': {
-      target: 'https://jobs.github.com/',
-      pathRewrite: {
-        '^/api' : '/'
-        },
-      changeOrigin: true,
-      "secure": false
-      }
-  },
+  // axios: {
+  //   credentials: false,
+  //   proxy: true
+  // },
+  // proxy: {
+  //   '/api': {
+  //     target: 'https://jobs.github.com/',
+  //     pathRewrite: {
+  //       '^/api' : '/'
+  //       },
+  //     changeOrigin: true,
+  //     "secure": false
+  //     }
+  // },
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
   }

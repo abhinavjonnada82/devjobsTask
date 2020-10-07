@@ -2,7 +2,7 @@
   <section class="section">
     <form id="search-form" >
         <b-field label="Search">
-            <b-input placeholder="Search..." v-model="name" type="search"></b-input>
+            <b-input placeholder="Search..." v-model="description" type="search"></b-input>
             <b-input placeholder="Location..." v-model="location"></b-input>
             <div class="block">
               <span>Full-time</span>
@@ -17,11 +17,54 @@
                 No
             </b-radio>
             </div>
-                      <b-switch type="is-warning" v-model="showRepos"></b-switch>
-
             <b-button @click=clickMe()>Submit</b-button>
         </b-field>
     </form>
+     <br />
+    <section>
+      <div v-if="!wholeResponse.length">No Jobs Found</div>
+      <div v-for="x in wholeResponse" :key="x.id">
+        <div class="card" style="max-width: 20rem;">
+          <header class="card-header">
+            <p class="card-header-title">{{x.company}}</p>
+          </header>
+          <div class="card-content">
+            <div class="content">{{x.title}}</div>
+            
+            <div class="content">{{x.location}}</div>
+   
+            <div class="content">{{x.company_url}}</div>
+          </div>
+          <footer class="card-footer">
+            
+            <button class="button is-primary is-medium" key=""@click="isCardModalActive = true">
+                View More  </button>
+
+             <b-modal v-model="isCardModalActive" :width="640" scroll="keep">
+            <div class="card">
+                <div class="card-content">
+                    <div class="media">
+                        <div class="media-content">
+                            <p class="title is-4">{{x.title}}</p>
+                            <p class="subtitle is-6">{{x.company}}</p>
+                            <p class="subtitle is-6">{{x.type}}</p>
+                        </div>
+                    </div>
+
+                    <div class="content">
+                      <p class="subtitle is-6">{{x.description}}</p>
+                        <a>{{x.how_to_apply}}</a>
+                        <br>
+                        <small>{{x.created_at}}</small>
+                    </div>
+                </div>
+            </div>
+        </b-modal>
+          </footer>
+        </div>
+        </div>
+    </section>
+    <br />
   </section>
 </template>
 
@@ -30,50 +73,42 @@ import axios from "axios";
 export default {
   data() {
             return {
-                name: '',
+                description: '',
                 location: '',
                 radio:'',
                 wholeResponse: [],
-                showRepos: null
+                isCardModalActive: false
             }
 },
  methods: {
          submit: function (event) {
               // `this` inside methods point to the Vue instance
               alert('Hello')
-              console.log({ name: this.name, location: this.location, radio: this.radio });
-             // const elem = this.$refs.myBtn
-              this.clickMe()
+              console.log({ description: this.description, location: this.location, radio: this.radio });
+    
             },
          
           clickMe: async function() {
-            const headers = { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*","Access-Control-Allow-Methods": "GET" };
-               const proxyurl = "https://cors-anywhere.herokuapp.com/";
-                const url = "https://jobs.github.com/positions"; // site that doesn’t send Access-Control-*
-                fetch(proxyurl + url, { headers }) // https://cors-anywhere.herokuapp.com/https://example.com
-                .then(response => {
-                    this.wholeResponse = response;
-                    console.log('hellooo!', this.wholeResponse)
-                  })
-                .then(contents => console.log(contents))
-                .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"))
-            } 
- },
+            let location = this.location.split(' ').join('+');
+           axios
+              .get(
+                 `https://github-jobs-proxy.appspot.com/positions?description=${this.description}&location=${location}`
+              )
+              .then(response => {
+                this.wholeResponse = response.data;
+              console.log('hellooo!', this.wholeResponse)
+              })
+              .catch(error => {
+                console.log(error);
+              });
+            },
 
- watch: {
-    showRepos: async function() {
-      axios
-        .get(
-          'https://github-jobs-proxy.appspot.com/positions'
-        )
-        .then(response => {
-          this.wholeResponse = response.data;
-         console.log('hellooo!', this.wholeResponse)
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }
+            
+ },
+  watch: {
+    populateResults() {
+
+            }
   }
 }
 </script>
