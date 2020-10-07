@@ -23,22 +23,23 @@
     </form>
      <br />
     <section>
-      <div v-if="!wholeResponse.length">No Jobs Found</div>
-      <div v-for="x in wholeResponse" :key="x.id">
-        <div class="card" style="max-width: 20rem;">
-          <header class="card-header">
+    
+      <div class="columns is-mobile is-desktop">
+        <div  v-for="x in wholeResponse" :key="x.id">
+          <div class="column">
+          <div v-if="!wholeResponse.length">No Jobs Found</div>
+          <div class="card" style="height: 100%">
+            <header class="card-header">
             <p class="card-header-title">{{x.company}}</p>
           </header>
           <div class="card-content">
             <div class="content">{{x.title}}</div>
-            
             <div class="content">{{x.location}}</div>
-   
             <div class="content">{{x.company_url}}</div>
           </div>
           <footer class="card-footer">
-            
-            <button class="button is-primary is-medium" key=""@click="isCardModalActive = true">
+             
+            <button class="button is-primary is-medium" @click="isCardModalActive = true">
                 View More  </button>
 
              <b-modal v-model="isCardModalActive" :width="640" scroll="keep">
@@ -60,10 +61,12 @@
                     </div>
                 </div>
             </div>
-        </b-modal>
+          </b-modal>
           </footer>
         </div>
-        </div>
+      </div> 
+      </div>  
+      </div>
     </section>
     <br />
   </section>
