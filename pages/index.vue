@@ -1,5 +1,6 @@
 <template>
   <section class="section">
+    <b-switch @click=toggle()>Dark Mode</b-switch>
     <form id="search-form" >
         <b-field label="Search">
             <b-input placeholder="Search..." v-model="description" type="search"></b-input>
@@ -81,13 +82,6 @@ export default {
             }
 },
  methods: {
-         submit: function (event) {
-              // `this` inside methods point to the Vue instance
-              alert('Hello')
-              console.log({ description: this.description, location: this.location, radio: this.radio });
-    
-            },
-         
           clickMe: async function() {
             let location = this.location.split(' ').join('+');
            axios
@@ -103,12 +97,15 @@ export default {
               });
             },
 
+            toggle() {
+                this.$colorMode.preference =
+                     this.$colorMode.value == "light" ? "dark" : "light";
+    }
+
             
  },
   watch: {
-    populateResults() {
 
-            }
   }
 }
 </script>
